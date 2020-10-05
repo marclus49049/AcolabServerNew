@@ -1,7 +1,10 @@
-import express from 'express';
-import { leaderboard } from '../controller/userService.js';
-import {default as auth} from '../middleware/auth.js'; 
+// import express from 'express';
+// import { leaderboard } from '../controller/userService.js';
+// import {default as auth} from '../middleware/auth.js'; 
 
+const express = require('express');
+const auth = require('../middleware/auth');
+const {leaderboard} = require('../controller/userService');
 // //user schema
 // var user={
 // 	username: 'User',
@@ -15,4 +18,4 @@ import {default as auth} from '../middleware/auth.js';
 const router = express.Router();
 router.post('/', auth, leaderboard);
 
-export default router;
+module.exports= router;

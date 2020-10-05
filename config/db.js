@@ -1,5 +1,4 @@
-// import { default as mongodb } from 'mongodb';
-import {default as Mongoose} from 'mongoose';
+const Mongoose = require('mongoose');
 
 // let MongoClient = mongodb.MongoClient;
 
@@ -14,4 +13,4 @@ const initiateMongoServer = () => {
     console.log('Mongo Connection Success');
 }
 
-export default initiateMongoServer;
+module.exports = initiateMongoServer

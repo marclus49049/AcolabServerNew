@@ -1,14 +1,20 @@
-import {v4 as uuidv4} from 'uuid';
-import { default as expressValidator} from "express-validator";
-import {default as bcrypt} from 'bcryptjs';
-import {default as jwt } from 'jsonwebtoken';
-import User from '../model/user.js';  
-import {default as userSubSchema} from '../model/userSub.js';
+// import {v4 as uuidv4} from 'uuid';
+// import { default as expressValidator} from "express-validator";
+// import {default as bcrypt} from 'bcryptjs';
+// import {default as jwt } from 'jsonwebtoken';
+// import User from '../model/user.js';  
+// import {default as userSubSchema} from '../model/userSub.js';
+const uuidv4 = require('uuid');
+const expressValidator = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../model/user');
+const userSubSchema = require('../model/userSub');
 
 const {validationResult} = expressValidator
 
 // register a user
-export const addUser = async (req, res) => {
+const addUser = async (req, res,next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({
@@ -68,9 +74,8 @@ export const addUser = async (req, res) => {
         res.status(500).send("Error in Saving");
     }
 };
-
 // login a user
-export const login = async (req, res) => {
+const login = async (req, res,next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -123,7 +128,7 @@ export const login = async (req, res) => {
 };
 
 // get user details
-export const getUser = async (req, res) => {
+const getUser = async (req, res,next) => {
   try {
     // request.user is getting fetched from Middleware after token authentication
     const user = await User.findById(req.user.id);
@@ -135,7 +140,7 @@ export const getUser = async (req, res) => {
 };
 
 
-export const userSub = (req,res,next)=>{
+const userSub = (req,res,next)=>{
 
   const user = User.findById(req.user.id);
 
@@ -166,7 +171,7 @@ export const userSub = (req,res,next)=>{
 	}
 }
 
-export const deductCredit = (req,res,next)=>{
+const deductCredit = (req,res,next)=>{
 
   const user = User.findById(req.user.id);
 	// if(req.body.username == user['username']){
@@ -187,7 +192,7 @@ export const deductCredit = (req,res,next)=>{
 
 
 
-export const leaderboard =async (req,res,next)=>{
+const leaderboard =async (req,res,next)=>{
   //score system
   const scoreSystem={
     "attendee_conceptual":1,
@@ -214,7 +219,20 @@ export const leaderboard =async (req,res,next)=>{
     }
   }catch (e) {
     res.send({ message: "Error in Fetching user" });
-  }
-  
-	
+  }	
 }
+
+// module.exports=addUser;
+// module.exports=login;
+// module.exports=getUser;
+// module.exports=userSub;
+// module.exports=deductCredit;
+// module.exports=leaderboard;
+module.exports = {
+  addUser:addUser,
+  login:login,
+  getUser:getUser,
+  userSub:userSub,
+  deductCredit:deductCredit,
+  leaderboard:leaderboard
+};

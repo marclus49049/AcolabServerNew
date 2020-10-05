@@ -1,7 +1,8 @@
-import express from 'express';
-import { addUser, getUser, login } from '../controller/userService.js'
-import {default as expressValidator} from 'express-validator';
-import {default as auth} from '../middleware/auth.js'; 
+const express = require('express');
+const { addUser, getUser, login } = require('../controller/userService')
+// const addUser = require('../controller/userService')
+const expressValidator = require('express-validator');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 const {check} = expressValidator;
@@ -27,4 +28,4 @@ router.post('/login',[
 
 router.get('/', auth, getUser);
 
-export default router;
+module.exports= router;

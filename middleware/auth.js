@@ -1,6 +1,6 @@
-import {default as jwt} from 'jsonwebtoken';
+const jwt =require('jsonwebtoken');
 
-export default function(req, res, next) {
+module.exports=(req, res, next) =>{
   const token = req.header("token");
   if (!token) return res.status(401).json({ message: "Auth Error" });
 
@@ -13,3 +13,4 @@ export default function(req, res, next) {
     res.status(500).send({ message: "Invalid Token" });
   }
 };
+// exports.module=auth;

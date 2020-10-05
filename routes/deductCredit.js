@@ -1,6 +1,8 @@
-import express from 'express';
-import {default as auth} from '../middleware/auth.js'; 
-import { deductCredit } from '../controller/userService.js';
+const express = require('express');
+const auth = require('../middleware/auth');
+const {deductCredit} = require('../controller/userService');
+// import {default as auth} from '../middleware/auth.js'; 
+// import { deductCredit } from '../controller/userService.js';
 
 // //user schema
 // var user={
@@ -15,4 +17,4 @@ import { deductCredit } from '../controller/userService.js';
 const router = express.Router();
 router.post('/', auth, deductCredit);
 
-export default router;
+module.exports=router;

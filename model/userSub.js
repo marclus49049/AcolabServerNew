@@ -1,4 +1,4 @@
-import { default as mongoose } from 'mongoose';
+const mongoose = require('mongoose');
 
 
 // const UserSubSchema = mongoose.Schema({
@@ -46,4 +46,4 @@ const sub_type = {
   
   // export model user with UserSchema
 //   export default mongoose.model("userSub", UserSubSchema);
-export default sub_type;
+module.exports= sub_type;

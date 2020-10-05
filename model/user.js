@@ -1,4 +1,4 @@
-import { default as mongoose} from 'mongoose';
+const mongoose = require('mongoose');
 
 const UserSubInfo = {
     plan_id:0,
@@ -41,4 +41,4 @@ const UserSchema = mongoose.Schema({
   });
   
   // export model user with UserSchema
-  export default mongoose.model("user", UserSchema);
+  module.exports= mongoose.model("user", UserSchema);
