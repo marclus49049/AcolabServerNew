@@ -1,0 +1,220 @@
+import {v4 as uuidv4} from 'uuid';
+import { default as expressValidator} from "express-validator";
+import {default as bcrypt} from 'bcryptjs';
+import {default as jwt } from 'jsonwebtoken';
+import User from '../model/user.js';  
+import {default as userSubSchema} from '../model/userSub.js';
+
+const {validationResult} = expressValidator
+
+// register a user
+export const addUser = async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    const {
+        username,
+        email,
+        password,
+        contact
+    } = req.body;
+
+    try {
+        let user = await User.findOne({
+            email
+        });
+        if (user) {
+            return res.status(400).json({
+                msg: "User Already Exists"
+            });
+        }
+
+        user = new User({
+            username,
+            email,
+            password,
+            contact
+        });
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        await user.save();
+
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            "secret", {
+                expiresIn: 10000
+            },
+            (err, token) => {
+                if (err) throw err;
+                res.status(200).json({
+                    token
+                });
+            }
+        );
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Error in Saving");
+    }
+};
+
+// login a user
+export const login = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    }
+
+    const { email, password } = req.body;
+    try {
+      let user = await User.findOne({
+        email
+      });
+      if (!user)
+        return res.status(400).json({
+          message: "User Not Exist"
+        });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch)
+        return res.status(400).json({
+          message: "Incorrect Password !"
+        });
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        "secret",
+        {
+          expiresIn: 3600
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.status(200).json({
+            token
+          });
+        }
+      );
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({
+        message: "Server Error"
+      });
+    }
+};
+
+// get user details
+export const getUser = async (req, res) => {
+  try {
+    // request.user is getting fetched from Middleware after token authentication
+    const user = await User.findById(req.user.id);
+    res.json(user);
+  } catch (e) {
+    res.send({ message: "Error in Fetching user" });
+  }
+
+};
+
+
+export const userSub = (req,res,next)=>{
+
+  const user = User.findById(req.user.id);
+
+	if(req.body.id in userSubSchema['sub_type']){
+
+		var d = new Date();
+		var addition = userSubSchema['sub_type'][req.body.id]['days'];
+    d.setDate(d.getDate() + addition);
+    
+    var user_sub_info ={
+      "plan_id":req.body.id,
+      "current_plan":userSubSchema['sub_type'][req.body.id]["name"],
+      "expire":d
+    };
+
+    User.update(
+      {_id: user.id}, {
+        sub_info: user_sub_info
+      }
+    );
+		
+		res.json(User.findById(req.user.id));
+
+	}else{
+
+		res.status(400).send('Invalid plan');
+
+	}
+}
+
+export const deductCredit = (req,res,next)=>{
+
+  const user = User.findById(req.user.id);
+	// if(req.body.username == user['username']){
+    User.update(
+      {_id: user.id}, {
+        credits: user.credits-1
+      }
+    );
+		res.status(200).json({
+			message:'hope you learn something new',
+			credits:user.credits
+		});
+	// }else{
+	// 	res.status(200).send('User not Found');
+	// }
+}
+
+
+
+
+export const leaderboard =async (req,res,next)=>{
+  //score system
+  const scoreSystem={
+    "attendee_conceptual":1,
+    "attendee_handson":2,
+    "speaker_conceptual":5,
+    "speaker_activity":5,
+    "speaker_handson":10,
+    "hackathon_submission":15,
+    "hackathon_mentor":20,
+    "colaboration_learner":15,
+    "colaboration_mentor":30
+  };
+  try{
+    var user = await User.findById(req.user.id)
+    if(req.body.action in scoreSystem){
+      var score = user.leaderboard + scoreSystem[req.body.action]
+      user.leaderboard = score
+      User.findOneAndUpdate(
+        {_id: req.user.id}, user
+      );
+      res.json(user);
+    }else{
+      res.status(400).send('Invalid action');
+    }
+  }catch (e) {
+    res.send({ message: "Error in Fetching user" });
+  }
+  
+	
+}
