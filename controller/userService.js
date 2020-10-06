@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const userSubSchema = require('../model/userSub');
+const { schema } = require('../model/user');
 
 const {validationResult} = expressValidator
 
@@ -141,13 +142,14 @@ const getUser = async (req, res,next) => {
 
 
 const userSub = (req,res,next)=>{
-
+  // console.log(req.user.id)
   const user = User.findById(req.user.id);
-
+  // console.log(userSubSchema['sub_type']);
+  // console.log(req.body.id);
+  // console.log(userSubSchema['sub_type'][req.body.id]);
 	if(req.body.id in userSubSchema['sub_type']){
-
 		var d = new Date();
-		var addition = userSubSchema['sub_type'][req.body.id]['days'];
+    var addition = userSubSchema['sub_type'][req.body.id]['days'];
     d.setDate(d.getDate() + addition);
     
     var user_sub_info ={
@@ -155,14 +157,14 @@ const userSub = (req,res,next)=>{
       "current_plan":userSubSchema['sub_type'][req.body.id]["name"],
       "expire":d
     };
-
     User.update(
-      {_id: user.id}, {
+      {_id: req.user.id}, {
         sub_info: user_sub_info
       }
     );
-		
-		res.json(User.findById(req.user.id));
+    console.log(User.findById(req.user.id));
+		res.json('done');
+		// res.status(200).json(User.findById(req.user.id));
 
 	}else{
 
@@ -172,18 +174,39 @@ const userSub = (req,res,next)=>{
 }
 
 const deductCredit = (req,res,next)=>{
+  var user;
+  User.findById(req.user.id,function(err,data){
+    if(err){
+      return err
+    }else{
+      User.update(
+        {_id: req.user.id}, {
+          credits:data['credits']-1 
+        },function(err,num,res){
+          // console.log(err)
+          // console.log(num)
+          // console.log(res)
+        }
+      );
+      res.status(200).json({
+        message:'hope you learn something new',
+        // credits:user.credits
+      });
+    }
+  });
 
-  const user = User.findById(req.user.id);
+  // const user = 
 	// if(req.body.username == user['username']){
-    User.update(
-      {_id: user.id}, {
-        credits: user.credits-1
-      }
-    );
-		res.status(200).json({
-			message:'hope you learn something new',
-			credits:user.credits
-		});
+  // console.log(User.findById(req.user.id)); 
+  // User.update(
+  //     {_id: req.user.id}, {
+  //       credits: user.credits-1
+  //     }
+  //   );
+	// 	res.status(200).json({
+	// 		message:'hope you learn something new',
+	// 		credits:user.credits
+	// 	});
 	// }else{
 	// 	res.status(200).send('User not Found');
 	// }
@@ -211,7 +234,7 @@ const leaderboard =async (req,res,next)=>{
       var score = user.leaderboard + scoreSystem[req.body.action]
       user.leaderboard = score
       User.findOneAndUpdate(
-        {_id: req.user.id}, user
+        {_id: req.user.id}, user,function(err,res){}
       );
       res.json(user);
     }else{
