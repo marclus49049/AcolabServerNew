@@ -24,7 +24,8 @@ const addUser = async (req, res,next) => {
     }
 
     const {
-        username,
+        first_name,
+        last_name,
         email,
         password,
         contact
@@ -41,7 +42,8 @@ const addUser = async (req, res,next) => {
         }
 
         user = new User({
-            username,
+            first_name,
+            last_name,
             email,
             password,
             contact
@@ -245,6 +247,31 @@ const leaderboard =async (req,res,next)=>{
   }	
 }
 
+const updateUserProfile = async (req,res,next)=>{
+  var user;
+  User.findById(req.user.id,function(err,data){
+    if(err){
+      return err
+    }else{
+      User.update(
+        {_id: req.user.id}, {
+          contact:req.body.contact,
+          first_name:req.body.first_name,
+          last_name:req.body.last_name,
+        },function(err,num,res){
+          // console.log(err)
+          // console.log(num)
+          // console.log(res)
+        }
+      );
+      res.status(200).json({
+        message:'hope you learn something new',
+        // credits:user.credits
+      });
+    }
+  });
+}
+
 // module.exports=addUser;
 // module.exports=login;
 // module.exports=getUser;
@@ -257,5 +284,6 @@ module.exports = {
   getUser:getUser,
   userSub:userSub,
   deductCredit:deductCredit,
-  leaderboard:leaderboard
+  leaderboard:leaderboard,
+  updateUserProfile:updateUserProfile
 };

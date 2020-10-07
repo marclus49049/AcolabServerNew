@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, getUser, login } = require('../controller/userService')
+const { addUser, getUser, login, updateUserProfile } = require('../controller/userService')
 // const addUser = require('../controller/userService')
 const expressValidator = require('express-validator');
 const auth = require('../middleware/auth');
@@ -11,7 +11,7 @@ const {check} = expressValidator;
 // all routers here are starting with /users 
 
 router.post('/', [
-    check("username", "Please Enter a Valid Username").not().isEmpty(),
+    // check("username", "Please Enter a Valid Username").not().isEmpty(),
     check("email", "Please Enter a Valid Email").isEmail(),
     check("contact", "Please Enter Valid Number").isNumeric().isMobilePhone(),
     check("password", "Please Enter a Valid Password").isLength({
@@ -27,5 +27,7 @@ router.post('/login',[
   ], login)
 
 router.get('/', auth, getUser);
+
+router.put('/updateuser',auth,updateUserProfile);
 
 module.exports= router;
