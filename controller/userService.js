@@ -176,24 +176,37 @@ const userSub = (req,res,next)=>{
 }
 
 const deductCredit = (req,res,next)=>{
-  var user;
-  User.findById(req.user.id,function(err,data){
+	User.findById(req.user.id,function(err,data){
     if(err){
       return err
     }else{
-      User.update(
-        {_id: req.user.id}, {
-          credits:data['credits']-1 
-        },function(err,num,res){
-          // console.log(err)
-          // console.log(num)
-          // console.log(res)
-        }
-      );
-      res.status(200).json({
-        message:'hope you learn something new',
-        // credits:user.credits
-      });
+		// console.log(data)
+		if(data.webinarlist.includes(req.body.webinarid)){
+			res.status(200).json({
+				message:'Already registered for this webinar',
+				action:null
+				// credits:user.credits
+			  });
+		}else{
+			User.findOneAndUpdate(
+				{_id: req.user.id}, {
+				credits:data['credits']-1,
+				$push:{webinarlist:req.body.webinarid}
+				},
+				function(err,num,res){
+				// console.log(err)
+				// console.log(num)
+				// console.log(res)
+				}
+			)
+			// .then(
+				res.status(200).json({
+					message:'hope you learn something new',
+					action:"attendee_conceptual"
+					// credits:user.credits
+				})
+			// );
+		}
     }
   });
 
@@ -232,7 +245,10 @@ const leaderboard =async (req,res,next)=>{
   };
   try{
     var user = await User.findById(req.user.id)
-    if(req.body.action in scoreSystem){
+	if(req.body.action==null){
+		res.status(200).json({message:'already registered'});
+	}
+	if(req.body.action in scoreSystem){
       var score = user.leaderboard + scoreSystem[req.body.action]
       user.leaderboard = score
       User.findOneAndUpdate(

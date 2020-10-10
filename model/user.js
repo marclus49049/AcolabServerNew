@@ -38,10 +38,12 @@ const UserSchema = mongoose.Schema({
     leaderboard: {
       type: Number,
       default: 0
-    }, sub_info: {
+    },
+    sub_info: {
       type: Object,
       default: UserSubInfo
     },
+    webinarlist:{type:[String],unique:true}
   });
   
   // export model user with UserSchema
