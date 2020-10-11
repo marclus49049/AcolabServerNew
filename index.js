@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 initiateMongoServer() // Connects to mongo db
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Users Routes
 app.use('/users', usersRouters);

@@ -16,6 +16,7 @@ const {validationResult} = expressValidator
 
 // register a user
 const addUser = async (req, res,next) => {
+  console.log(req.body);
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({
@@ -33,7 +34,10 @@ const addUser = async (req, res,next) => {
 
     try {
         let user = await User.findOne({
-            email
+            $or:[
+              {'email':email},
+              {'contact':contact}
+            ]
         });
         if (user) {
             return res.status(400).json({
