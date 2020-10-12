@@ -5,6 +5,7 @@ const initiateMongoServer = require('./config/db');
 const userSub = require('./routes/userSub');
 const deductCredit = require('./routes/deductCredit');
 const leaderboard = require('./routes/leaderboard');
+var cors = require('cors');
 
 // import bodyParser from 'body-parser';
 // import usersRouters from './routes/users.js';
@@ -13,11 +14,19 @@ const leaderboard = require('./routes/leaderboard');
 // import deductCredit from './routes/deductCredit.js';
 // import leaderboard from './routes/leaderboard.js';
 
+// Enable this during production
+// var corsOptions = {
+//     origin: 'http://example.com',
+//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 initiateMongoServer() // Connects to mongo db
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
