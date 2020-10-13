@@ -260,7 +260,7 @@ const leaderboard =async (req,res,next)=>{
       );
       res.json(user);
     }else{
-      res.status(400).send('Invalid action');
+      res.status(400).json({message:'Invalid Action'});
     }
   }catch (e) {
     res.send({ message: "Error in Fetching user" });
