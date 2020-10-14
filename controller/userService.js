@@ -166,7 +166,12 @@ const userSub = (req,res,next)=>{
     User.update(
       {_id: req.user.id}, {
         sub_info: user_sub_info
-      }
+      },
+      function(err,num,res){
+				// console.log(err)
+				// console.log(num)
+				// console.log(res)
+				}
     );
     console.log(User.findById(req.user.id));
 		res.json('done');
