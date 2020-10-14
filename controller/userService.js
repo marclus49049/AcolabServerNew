@@ -269,6 +269,7 @@ const leaderboard =async (req,res,next)=>{
 
 const updateUserProfile = async (req,res,next)=>{
   var user;
+  console.log(req.body);
   User.findById(req.user.id,function(err,data){
     if(err){
       return err
