@@ -156,8 +156,9 @@ const userSub = (req,res,next)=>{
 	if(req.body.id in userSubSchema['sub_type']){
 		var d = new Date();
     var addition = userSubSchema['sub_type'][req.body.id]['days'];
+    // console.log(d.getMonth());
     d.setDate(d.getDate() + addition);
-    
+    // console.log(d);
     var user_sub_info ={
       "plan_id":req.body.id,
       "current_plan":userSubSchema['sub_type'][req.body.id]["name"],
@@ -173,7 +174,7 @@ const userSub = (req,res,next)=>{
 				// console.log(res)
 				}
     );
-    console.log(User.findById(req.user.id));
+    // console.log(User.findById(req.user.id));
 		res.json('done');
 		// res.status(200).json(User.findById(req.user.id));
 
@@ -185,37 +186,45 @@ const userSub = (req,res,next)=>{
 }
 
 const deductCredit = (req,res,next)=>{
+  d=new Date();
+  d.setDate(d.getDate());
 	User.findById(req.user.id,function(err,data){
     if(err){
       return err
     }else{
-		// console.log(data)
-		if(data.webinarlist.includes(req.body.webinarid)){
-			res.status(200).json({
-				message:'Already registered for this webinar',
-				action:null
-				// credits:user.credits
-			  });
-		}else{
-			User.findOneAndUpdate(
-				{_id: req.user.id}, {
-				credits:data['credits']-1,
-				$push:{webinarlist:req.body.webinarid}
-				},
-				function(err,num,res){
-				// console.log(err)
-				// console.log(num)
-				// console.log(res)
-				}
-			)
-			// .then(
-				res.status(200).json({
-					message:'hope you learn something new',
-					action:"attendee_conceptual"
-					// credits:user.credits
-				})
-			// );
-		}
+      expiredate=data.sub_info['expire'];
+      // console.log(d);
+      if(expiredate>d){
+        console.log('ok')
+        if(data.webinarlist.includes(req.body.webinarid)){
+          res.status(202).json({
+            message:'Already registered for this webinar',
+            action:null
+            // credits:user.credits
+            });
+        }else{
+          User.findOneAndUpdate(
+            {_id: req.user.id}, {
+            credits:data['credits']-1,
+            $push:{webinarlist:req.body.webinarid}
+            },
+            function(err,num,res){
+            // console.log(err)
+            // console.log(num)
+            // console.log(res)
+            }
+          )
+          // .then(
+            res.status(200).json({
+              message:'hope you learn something new',
+              action:"attendee_conceptual"
+              // credits:user.credits
+            })
+          // );
+        }
+      }else{
+        res.status(201).json({message:'not subscribed'})
+      }
     }
   });
 
