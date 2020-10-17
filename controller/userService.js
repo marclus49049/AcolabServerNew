@@ -190,6 +190,10 @@ const userSub = (req,res,next)=>{
   });
 }
 
+
+// 202 Already Registered
+// 200 Registerd (First time)
+// 201 User Not subbed
 const deductCredit = (req,res,next)=>{
   d=new Date();
   d.setDate(d.getDate());
@@ -201,12 +205,12 @@ const deductCredit = (req,res,next)=>{
       // console.log(d);
       if(expiredate>d){
         console.log('ok')
-        if(data.webinarlist.includes(req.body.webinarid)){
+        if(data.webinarlist.includes(req.body.webinarid)){ // Send URL here name it meeting_url
           res.status(202).json({
             message:'Already registered for this webinar',
             action:null
             // credits:user.credits
-            });
+            }); 
         }else{
           User.findOneAndUpdate(
             {_id: req.user.id}, {
@@ -220,7 +224,7 @@ const deductCredit = (req,res,next)=>{
             }
           )
           // .then(
-            res.status(200).json({
+            res.status(200).json({ // Send URL here
               message:'hope you learn something new',
               action:"attendee_conceptual"
               // credits:user.credits
