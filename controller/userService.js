@@ -151,8 +151,8 @@ const getUser = async (req, res,next) => {
 
 const userSub = (req,res,next)=>{
   // console.log(req.user.id)
-  const user = User.findById(req.user.id);
-  // console.log(userSubSchema['sub_type']);
+  const user = User.findById(req.user.id,function(err,data){
+    // console.log(userSubSchema['sub_type']);
   // console.log(req.body.id);
   // console.log(userSubSchema['sub_type'][req.body.id]);
 	if(req.body.id in userSubSchema['sub_type']){
@@ -176,15 +176,16 @@ const userSub = (req,res,next)=>{
 				// console.log(res)
 				}
     );
-    // console.log(User.findById(req.user.id));
-		res.json('done');
+    // console.log(user.path);
+		res.json(data);
 		// res.status(200).json(User.findById(req.user.id));
 
-	}else{
+    }else{
 
-		res.status(400).send('Invalid plan');
+      res.status(400).send('Invalid plan');
 
-	}
+    }
+  });
 }
 
 const deductCredit = (req,res,next)=>{
