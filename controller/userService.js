@@ -139,9 +139,11 @@ const login = async (req, res,next) => {
 const getUser = async (req, res,next) => {
   try {
     // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id).then(
-      res.json(user)
-    );
+    const user = await User.findById(req.user.id, 
+        function (error, data) {
+          res.json(data);
+        }
+      )
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
   }
