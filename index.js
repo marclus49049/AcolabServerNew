@@ -15,10 +15,10 @@ var cors = require('cors');
 // import leaderboard from './routes/leaderboard.js';
 
 // Enable this during production
-// var corsOptions = {
-//     origin: 'http://example.com',
-//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
+var corsOptions = {
+    origin: 'http://www.acolab.org',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 
 const app = express();

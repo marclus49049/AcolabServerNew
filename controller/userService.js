@@ -16,7 +16,7 @@ const {validationResult} = expressValidator
 
 // register a user
 const addUser = async (req, res,next) => {
-  console.log(req.body);
+  // console.log(req.body);
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({
@@ -83,6 +83,7 @@ const addUser = async (req, res,next) => {
 };
 // login a user
 const login = async (req, res,next) => {
+  console.log(req.body)
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -138,8 +139,9 @@ const login = async (req, res,next) => {
 const getUser = async (req, res,next) => {
   try {
     // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id);
-    res.json(user);
+    const user = await User.findById(req.user.id).then(
+      res.json(user)
+    );
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
   }
