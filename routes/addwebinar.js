@@ -7,8 +7,8 @@ const webinar = require('../model/webinar');
 router.post('/addwebinar',async(req,res)=>{
 	var newwebinar=new webinar({
 		title:req.body.title,
-		speaker:req.body.title,
-		description:req.body.title,
+		speaker:req.body.speaker,
+		description:req.body.description,
 		link:req.body.link,
 		action:req.body.action,
 		date:req.body.date,
