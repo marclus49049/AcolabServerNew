@@ -5,6 +5,7 @@ const initiateMongoServer = require('./config/db');
 const userSub = require('./routes/userSub');
 const deductCredit = require('./routes/deductCredit');
 const leaderboard = require('./routes/leaderboard');
+const webinar = require('./routes/addwebinar');
 var cors = require('cors');
 
 // import bodyParser from 'body-parser';
@@ -41,6 +42,9 @@ app.use('/deduct_credit', deductCredit);
 
 //Deduct Webinar Credit
 app.use('/leaderboard_action', leaderboard);
+
+//webinar apis
+app.use('/webinar',webinar);
 
 app.get('/', (req, res) => {
     console.log('API is Running');

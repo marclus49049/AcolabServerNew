@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const userSubSchema = require('../model/userSub');
 const { schema } = require('../model/user');
+const Webinar=require('../model/webinar');
 
 const {validationResult} = expressValidator
 
@@ -197,45 +198,50 @@ const userSub = (req,res,next)=>{
 const deductCredit = (req,res,next)=>{
   d=new Date();
   d.setDate(d.getDate());
-	User.findById(req.user.id,function(err,data){
-    if(err){
-      return err
-    }else{
-      expiredate=data.sub_info['expire'];
-      // console.log(d);
-      if(expiredate>d){
-        console.log('ok')
-        if(data.webinarlist.includes(req.body.webinarid)){ // Send URL here name it meeting_url
-          res.status(202).json({
-            message:'Already registered for this webinar',
-            action:null
-            // credits:user.credits
-            }); 
-        }else{
-          User.findOneAndUpdate(
-            {_id: req.user.id}, {
-            credits:data['credits']-1,
-            $push:{webinarlist:req.body.webinarid}
-            },
-            function(err,num,res){
-            // console.log(err)
-            // console.log(num)
-            // console.log(res)
-            }
-          )
-          // .then(
-            res.status(200).json({ // Send URL here
-              message:'hope you learn something new',
-              action:"attendee_conceptual"
-              // credits:user.credits
-            })
-          // );
-        }
+  var webinar=Webinar.findById(req.body.webinarid).then((result)=>{
+    User.findById(req.user.id,function(err,data){
+      if(err){
+        return err
       }else{
-        res.status(201).json({message:'not subscribed'})
+        expiredate=data.sub_info['expire'];
+        // console.log(d);
+        if(expiredate>d){
+          console.log('ok')
+          if(data.webinarlist.includes(req.body.webinarid)){ // Send URL here name it meeting_url
+            res.status(202).json({
+              message:'Already registered for this webinar',
+              action:null,
+              meeting_url:result['link']
+              // credits:user.credits
+              }); 
+          }else{
+            User.findOneAndUpdate(
+              {_id: req.user.id}, {
+              credits:data['credits']-1,
+              $push:{webinarlist:req.body.webinarid}
+              },
+              function(err,num,res){
+              // console.log(err)
+              // console.log(num)
+              // console.log(res)
+              }
+            )
+            // .then(
+              res.status(200).json({ // Send URL here
+                message:'hope you learn something new',
+                action:result['action'],
+                meeting_url:result['link']
+                // credits:user.credits
+              })
+            // );
+          }
+        }else{
+          res.status(201).json({message:'not subscribed'})
+        }
       }
     }
-  });
+    );
+  })
 
   // const user = 
 	// if(req.body.username == user['username']){
