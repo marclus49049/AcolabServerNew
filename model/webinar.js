@@ -22,6 +22,10 @@ const webinar = mongoose.Schema({
       required: true
     },
     date:{
+      type: Date,
+      required: true
+    },
+    status:{
       type: String,
       required: true
     }
