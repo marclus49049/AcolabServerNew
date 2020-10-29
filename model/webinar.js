@@ -28,6 +28,10 @@ const webinar = mongoose.Schema({
     status:{
       type: String,
       required: true
+    },
+    designation:{
+      type: String,
+      required: true
     }
   });
   // export model user with UserSchema
