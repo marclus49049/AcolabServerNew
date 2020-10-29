@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
-
+var d = new Date();
+var addition = 60;
+    // console.log(d.getMonth());
+d.setDate(d.getDate() + addition);
 const UserSubInfo = {
-    plan_id:0,
-    current_plan:"none",
-    expire:Date.now()
+    plan_id:2,
+    current_plan:"mega",
+    expire:d
   };
 
 const UserSchema = mongoose.Schema({
