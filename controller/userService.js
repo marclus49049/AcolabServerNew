@@ -217,7 +217,7 @@ const deductCredit = (req,res,next)=>{
           }else{
             User.findOneAndUpdate(
               {_id: req.user.id}, {
-              credits:data['credits']-1,
+              credits:data['credits']-0, // AFTER USER SUB IS ENABLED CHANGES THIS TO -1
               $push:{webinarlist:req.body.webinarid}
               },
               function(err,num,res){
