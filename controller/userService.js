@@ -322,6 +322,28 @@ const updateUserProfile = async (req,res,next)=>{
   });
 }
 
+const addorder = async (req,res,next)=>{
+  var user;
+  var order={
+    "orderid":req.body.orderid
+  }
+  // console.log(req.body);
+  User.findById(req.user.id,function(err,data){
+    if(err){
+      return err
+    }else{
+      User.update(
+        {_id: req.user.id}, {
+          $push:{orderlist:order}
+        },function(err,num,res){}
+      );
+      res.status(200).json({
+        message:'order added',
+      });
+    }
+  });
+}
+
 // module.exports=addUser;
 // module.exports=login;
 // module.exports=getUser;
@@ -335,5 +357,6 @@ module.exports = {
   userSub:userSub,
   deductCredit:deductCredit,
   leaderboard:leaderboard,
-  updateUserProfile:updateUserProfile
+  updateUserProfile:updateUserProfile,
+  addorder:addorder
 };

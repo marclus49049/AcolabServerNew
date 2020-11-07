@@ -7,6 +7,7 @@ const deductCredit = require('./routes/deductCredit');
 const leaderboard = require('./routes/leaderboard');
 const webinar = require('./routes/addwebinar');
 const generatemail = require('./routes/generatemail');
+const addorder = require('./routes/order');
 var cors = require('cors');
 
 // import bodyParser from 'body-parser';
@@ -48,6 +49,8 @@ app.use('/leaderboard_action', leaderboard);
 app.use('/webinar',webinar);
 
 app.use('/generatemail',generatemail);
+
+app.use('/addorder',addorder);
 
 app.get('/', (req, res) => {
     console.log('API is Running');

@@ -46,7 +46,8 @@ const UserSchema = mongoose.Schema({
       type: Object,
       default: UserSubInfo
     },
-    webinarlist:{type:[String],unique:false}
+    webinarlist:{type:[String],unique:false},
+    orderlist:[Object]
   });
   
   // export model user with UserSchema
