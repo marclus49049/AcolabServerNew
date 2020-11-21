@@ -8,6 +8,7 @@ const leaderboard = require('./routes/leaderboard');
 const webinar = require('./routes/addwebinar');
 const generatemail = require('./routes/generatemail');
 const addorder = require('./routes/order');
+const hackathon = require('./routes/hackathon');
 var cors = require('cors');
 
 // import bodyParser from 'body-parser';
@@ -51,6 +52,8 @@ app.use('/webinar',webinar);
 app.use('/generatemail',generatemail);
 
 app.use('/addorder',addorder);
+
+app.use('/hackathon',hackathon);
 
 app.get('/', (req, res) => {
     console.log('API is Running');
