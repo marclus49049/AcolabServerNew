@@ -344,6 +344,45 @@ const addorder = async (req,res,next)=>{
   });
 }
 
+const registerhackathon = async(req,res,next)=>{
+	const teammembers=req.body.teammembers;
+	var arr=[];
+	var notfound=false;
+	var email="";
+	for(var i=0;i<teammembers.length;i++){
+		email=teammembers[i]
+		await User.find({email:teammembers[i]}).then(async(result)=>{
+			if(result.length<1){
+				// console.log(email)
+				notfound=!notfound;
+				// console.log('asd'+notfound)
+				
+			}else{
+				arr.push(email)
+			}
+		}).catch((err)=>{
+			// res.status(400).json({message:email,flag:notfound})
+		})
+	}
+	// {
+	// 	console.log(result[0])
+	// 	await User.findByIdAndUpdate(result[0]._id,{
+	// 		$push:{hackathonlist:req.body.hackathonid}
+	// 	})
+	// }
+	// console.log('ghj'+notfound)
+	if(notfound==false){
+		for(var i =0;i<arr.length;i++){
+			await User.findOneAndUpdate({email:arr[i]},{
+				$push:{hackathonlist:req.body.hackathonid}
+			}).then().catch();
+		}
+		res.status(200).json({emails:arr})
+	}else{
+		res.status(400).json({message:email,flag:notfound})
+	}
+}
+
 // module.exports=addUser;
 // module.exports=login;
 // module.exports=getUser;
@@ -358,5 +397,6 @@ module.exports = {
   deductCredit:deductCredit,
   leaderboard:leaderboard,
   updateUserProfile:updateUserProfile,
-  addorder:addorder
+  addorder:addorder,
+  registerhackathon:registerhackathon
 };

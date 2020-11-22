@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, getUser, login, updateUserProfile } = require('../controller/userService')
+const { addUser, getUser, login, updateUserProfile, registerhackathon } = require('../controller/userService')
 // const addUser = require('../controller/userService')
 const expressValidator = require('express-validator');
 const auth = require('../middleware/auth');
@@ -29,5 +29,7 @@ router.post('/login',[
 router.get('/', auth, getUser);
 
 router.put('/updateuser',auth,updateUserProfile);
+
+router.post('/registerhackathon',registerhackathon)
 
 module.exports= router;
