@@ -10,4 +10,3 @@ router.post('/save', auth, hackaMentor);
 router.post('/null', auth, NullifyHacka);
 
 module.exports = router;
-

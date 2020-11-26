@@ -11,7 +11,7 @@ const hackaMentor = async(req,res,next)=>{
 				$push:{Mentorlist: {_id:req.user.id},}
 			}).then().catch();
 		
-		res.status(200).json({email:req.body.email})
+		res.status(200).json({message:'You are added to the hackathon'});
 	
 }
 
@@ -34,7 +34,7 @@ const addHacka = async (req,res,next)=>{
         }
       );
       res.status(200).json({
-        message:'Hackathon added to your profile',
+        message:'Hackathon added to your profile'
       });
     }
   });
@@ -46,23 +46,31 @@ const NullifyHacka = async (req,res,next)=>{
     "hackathonid":req.body.hackathonid,
     "roll":'null'
   }
+  
   User.findById(req.user.id,function(err,data){
         if(err){
             return err
         }else{
       User.update(
         {_id: req.user.id}, {
-          $push:{Mentorlist:Hacka}
+          $push:{hackathonList:Hacka}
         },function(err,num,res){
             //error
         }
       );
-      res.status(200).json({
-        message:'Your participation is canceled',
+      // res.status(200).json({
+      //   message:'Your participation is canceled'
       });
     }
   });
-    
+  //remove the user from hackathon list
+  await Hackathon.findOneAndUpdate({id:req.body.hackathonid},{
+    findOneAndDelete
+  }).then().catch(err) {
+    res.status(500).send("error in doing changes")
+  };
+  res.status(200).json({
+    message:'Your participation is canceled', 
 }
 
 module.exports = {
