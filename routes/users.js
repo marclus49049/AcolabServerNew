@@ -30,6 +30,6 @@ router.get('/', auth, getUser);
 
 router.put('/updateuser',auth,updateUserProfile);
 
-router.post('/registerhackathon',registerhackathon)
+router.post('/registerhackathon',registerhackathon);
 
 module.exports= router;

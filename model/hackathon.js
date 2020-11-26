@@ -17,7 +17,9 @@ const HackathonSchema = mongoose.Schema({
 		type:String,
 		default:"upcoming"
 	},
+    Mentorlist:{type:[Object],unique:false},
+    participantlist:{type:[Object],unique:false}
   });
-  
+
   // export model user with UserSchema
   module.exports= mongoose.model("hackathon", HackathonSchema);
