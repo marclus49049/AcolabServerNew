@@ -6,22 +6,17 @@ const Hackathon = require("../model/hackathon");
 const hackaMentor = async(req,res,next)=>{
     var user_id;
     var user;
+  var Hacka={
+    "hackathonid":req.body.hackathonid,
+    "roll":'Mentor'
+  }
     
         await Hackathon.findOneAndUpdate({id:req.body.hackathonid},{
 				$push:{Mentorlist: {_id:req.user.id},}
 			}).then().catch();
 		
 		res.status(200).json({message:'You are added to the hackathon'});
-	
-}
-
-//adding hackathon to user's list
-const addHacka = async (req,res,next)=>{
-  var user;
-  var Hacka={
-    "hackathonid":req.body.hackathonid,
-    "roll":'Mentor'
-  }
+    
   User.findById(req.user.id,function(err,data){
         if(err){
             return err
@@ -39,6 +34,31 @@ const addHacka = async (req,res,next)=>{
     }
   });
 }
+
+// //adding hackathon to user's list
+// const addHacka = async (req,res,next)=>{
+//   var user;
+//   var Hacka={
+//     "hackathonid":req.body.hackathonid,
+//     "roll":'Mentor'
+//   }
+//   User.findById(req.user.id,function(err,data){
+//         if(err){
+//             return err
+//         }else{
+//       User.update(
+//         {_id: req.user.id}, {
+//           $push:{hackathonList:Hacka}
+//         },function(err,num,res){
+//             //error
+//         }
+//       );
+//       res.status(200).json({
+//         message:'Hackathon added to your profile'
+//       });
+//     }
+//   });
+// }
 
 const NullifyHacka = async (req,res,next)=>{
   var user;
@@ -65,7 +85,7 @@ const NullifyHacka = async (req,res,next)=>{
   });
   //remove the user from hackathon list
   await Hackathon.findOneAndUpdate({id:req.body.hackathonid},{
-    findOneAndDelete
+    hackathonList
   }).then().catch(err) {
     res.status(500).send("error in doing changes")
   };

@@ -3,10 +3,10 @@ const auth = require('../middleware/auth');
 const { hackaMentor, addHacka, NullifyHacka } = require('../controller/hackaService');
 const router = express.Router();
 
-router.post('/add', auth, addHacka);
+//add user to hackathon list
+router.post('/registerMentor', auth, hackaMentor);
 
-router.post('/save', auth, hackaMentor);
-
-router.post('/null', auth, NullifyHacka);
+//cancel the user participation
+router.post('/cancel', auth, NullifyHacka);
 
 module.exports = router;

@@ -56,7 +56,7 @@ app.use('/addorder',addorder);
 
 app.use('/hackathon',hackathon);
 
-app.use('/MentorRegis',HackaMentorRegis);
+app.use('/RegisterHackathon',HackaMentorRegis);
 
 app.get('/', (req, res) => {
     console.log('API is Running');
