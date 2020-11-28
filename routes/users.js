@@ -22,7 +22,7 @@ router.post('/', [
 router.post('/login',[
     check("email", "Please enter a valid email").isEmail(),
     check("password", "Please enter a valid password").isLength({
-      min: 6
+      min: 7
     })
   ], login)
 
@@ -30,6 +30,6 @@ router.get('/', auth, getUser);
 
 router.put('/updateuser',auth,updateUserProfile);
 
-router.post('/registerhackathon',registerhackathon)
+router.post('/registerhackathon',registerhackathon);
 
 module.exports= router;

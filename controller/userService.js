@@ -374,7 +374,8 @@ const registerhackathon = async(req,res,next)=>{
 	if(notfound==false){
 		for(var i =0;i<arr.length;i++){
 			await User.findOneAndUpdate({email:arr[i]},{
-				$push:{hackathonlist:req.body.hackathonid}
+				$push:{hackathonlist:{id:req.body.hackathonid,
+                                      roll:'participant'}}
 			}).then().catch();
 		}
 		res.status(200).json({emails:arr})

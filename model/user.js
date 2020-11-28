@@ -4,9 +4,9 @@ var addition = 60;
     // console.log(d.getMonth());
 d.setDate(d.getDate() + addition);
 const UserSubInfo = {
-    plan_id:2,
-    current_plan:"mega",
-    expire:d
+    plan_id: 2,
+    current_plan: "mega",
+    expire: d
   };
 
 const UserSchema = mongoose.Schema({
@@ -48,7 +48,7 @@ const UserSchema = mongoose.Schema({
     },
     webinarlist:{type:[String],unique:false},
     orderlist:[Object],
-    hackathonlist:{type:[String],unique:false},
+    hackathonlist:{type:[Object],unique:false},
   });
   
   // export model user with UserSchema

@@ -31,4 +31,13 @@ router.post('/completehackathon',async(req,res)=>{
 		res.json(err)
 	})
 })
+
+router.post('/registerparticipant',async(req,res)=>{
+	await Hackathon.findByIdAndUpdate(req.body.id,{status:"complete"}).then((result)=>{
+		res.status(200).json(result)
+	}).catch((err)=>{
+		res.json(err)
+	})
+})
+
 module.exports= router;
