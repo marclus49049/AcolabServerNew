@@ -21,19 +21,18 @@ var cors = require('cors');
 
 // Enable this during production
 var corsOptions = {
-    origin: 'http://www.acolab.org',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
+	origin: 'http://www.acolab.org',
+	optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-initiateMongoServer() // Connects to mongo db
+initiateMongoServer(); // Connects to mongo db
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Users Routes
 app.use('/users', usersRouters);
@@ -48,20 +47,20 @@ app.use('/deduct_credit', deductCredit);
 app.use('/leaderboard_action', leaderboard);
 
 //webinar apis
-app.use('/webinar',webinar);
+app.use('/webinar', webinar);
 
-app.use('/generatemail',generatemail);
+app.use('/generatemail', generatemail);
 
-app.use('/addorder',addorder);
+app.use('/addorder', addorder);
 
-app.use('/hackathon',hackathon);
+app.use('/hackathon', hackathon);
 
-app.use('/RegisterHackathon',HackaMentorRegis);
+app.use('/RegisterHackathon', HackaMentorRegis);
 
 app.get('/', (req, res) => {
-    console.log('API is Running');
+	console.log('API is Running');
 });
 
 app.listen(PORT, () => {
-    console.log(`Server Running on port: http://localhost:${PORT}`);
+	console.log(`Server Running on port: http://localhost:${PORT}`);
 });
