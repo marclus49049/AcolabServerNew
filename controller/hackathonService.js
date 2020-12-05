@@ -88,7 +88,7 @@ const registerParticipant = async (req, res, next) => {
           .then(
             result => {
               for (let i = 0; i < arr.length; i++) {
-                await Hackathon.findOneAndUpdate(
+                Hackathon.findOneAndUpdate(
                   { id: req.body.hackathonid },
                   {
                     $push: { userList: { id: arr[i], roll: "participant" } },

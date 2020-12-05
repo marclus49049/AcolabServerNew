@@ -9,7 +9,7 @@ const webinar = require('./routes/addwebinar');
 const generatemail = require('./routes/generatemail');
 const addorder = require('./routes/order');
 const hackathon = require('./routes/hackathon');
-const HackaMentorRegis = require('./routes/HackaMentorRegis');
+const HackaMentorRegis = require('./routes/hackathon');
 var cors = require('cors');
 
 // import bodyParser from 'body-parser';

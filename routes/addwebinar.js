@@ -13,6 +13,7 @@ router.post('/addwebinar', async (req, res) => {
 		action: req.body.action,
 		date: req.body.date,
 		status: req.body.status,
+		designation:req.body.designation
 	});
 	await newwebinar.save().then(res.json(newwebinar));
 });
@@ -30,6 +31,7 @@ router.post('/updatewebinar', async (req, res) => {
 				date: req.body.date,
 				designation: req.body.designation,
 				status: req.body.status,
+				designation: req.body.designation
 			},
 			function (err, num, res) {
 				// console.log(err)

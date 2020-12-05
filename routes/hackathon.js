@@ -5,7 +5,7 @@ const Hackathon = require('../model/hackathon');
 const {
 	registerMentor,
 	registerParticipant,
-} = require('../controller/hakathonService');
+} = require('../controller/hackathonService');
 
 router.post('/addhackathon', async (req, res) => {
 	hackathon = new Hackathon({
