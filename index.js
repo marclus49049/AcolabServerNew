@@ -1,4 +1,10 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
+const options = {
+	key: fs.readFileSync('./certificates/key.pem'),
+	cert: fs.readFileSync('./certificates/cert.pem')
+};
 const bodyParser = require('body-parser');
 const usersRouters = require('./routes/users');
 const initiateMongoServer = require('./config/db');
@@ -64,3 +70,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
 	console.log(`Server Running on port: http://localhost:${PORT}`);
 });
+
+const httpsserver =  https.createServer(options,app);
+httpsserver.listen(5001);
+console.log('https server started');
