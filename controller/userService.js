@@ -75,6 +75,37 @@ const addUser = async (req, res, next) => {
 		res.status(500).send('Error in Saving');
 	}
 };
+
+//password reset
+const resetPassword=async (req,res,next)=> {
+	const salt = await bcrypt.genSalt(10);
+	//const isMatch = await bcrypt.compare(password, user.password);
+	const user =await User.findById(req.user.id, async function (err, data) {
+		const isMatch =await  bcrypt.compare(req.body.oldPassword, data.password);
+		if(isMatch){
+			const salt = await bcrypt.genSalt(10);
+			const newPassword = await bcrypt.hash(req.body.newPassword, salt);
+			User.update(
+				{ _id: req.user.id },
+				{
+					password:newPassword ,
+				},
+				function (err, num, res) {
+					// console.log(err)
+					// console.log(num)
+					// console.log(res)
+				}
+			);
+			res.status(200).json({message:"reset done"})
+		}else{
+			res.status(400).json({message:"invalid password"})
+		}
+	}).catch((err)=>{
+		res.status(200).json({message:err})
+	})
+}
+
+
 // login a user
 const login = async (req, res, next) => {
 	console.log(req.body);
@@ -347,4 +378,5 @@ module.exports = {
 	leaderboard: leaderboard,
 	updateUserProfile: updateUserProfile,
 	addorder: addorder,
+	resetPassword:resetPassword
 };

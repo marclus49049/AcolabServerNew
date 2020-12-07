@@ -4,6 +4,7 @@ const {
 	getUser,
 	login,
 	updateUserProfile,
+	resetPassword
 } = require('../controller/userService');
 // const addUser = require('../controller/userService')
 const expressValidator = require('express-validator');
@@ -42,4 +43,5 @@ router.get('/', auth, getUser);
 
 router.put('/updateuser', auth, updateUserProfile);
 
+router.put('/resetpassword',auth,resetPassword);
 module.exports = router;
