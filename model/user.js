@@ -30,6 +30,10 @@ const UserSchema = mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	countryCode: {
+		type: String,
+		required: true,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now(),

@@ -25,7 +25,7 @@ const addUser = async (req, res, next) => {
 		});
 	}
 
-	const { first_name, last_name, email, password, contact } = req.body;
+	const { first_name, last_name, email, password, contact, countryCode } = req.body;
 
 	try {
 		let user = await User.findOne({
@@ -43,6 +43,7 @@ const addUser = async (req, res, next) => {
 			email,
 			password,
 			contact,
+			countryCode
 		});
 
 		const salt = await bcrypt.genSalt(10);
@@ -291,6 +292,7 @@ const updateUserProfile = async (req, res, next) => {
 					contact: req.body.contact,
 					first_name: req.body.first_name,
 					last_name: req.body.last_name,
+					countryCode:req.body.countryCode
 				},
 				function (err, num, res) {
 					// console.log(err)
@@ -299,7 +301,7 @@ const updateUserProfile = async (req, res, next) => {
 				}
 			);
 			res.status(200).json({
-				message: 'hope you learn something new',
+				message: 'User Updated',
 				// credits:user.credits
 			});
 		}
