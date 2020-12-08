@@ -16,6 +16,7 @@ const generatemail = require('./routes/generatemail');
 const addorder = require('./routes/order');
 const hackathon = require('./routes/hackathon');
 const HackaMentorRegis = require('./routes/hackathon');
+const OTP = require('./routes/otp');
 var cors = require('cors');
 
 // import bodyParser from 'body-parser';
@@ -62,6 +63,8 @@ app.use('/addorder', addorder);
 app.use('/hackathon', hackathon);
 
 app.use('/RegisterHackathon', HackaMentorRegis);
+
+app.use('/otp',OTP);
 
 app.get('/', (req, res) => {
 	console.log('API is Running');

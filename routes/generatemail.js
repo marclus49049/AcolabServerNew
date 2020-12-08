@@ -6,7 +6,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 const user = require('../model/user');
-
+const OTP = require('../model/otp');
 const oauth2Client = new OAuth2(
 	'1047201258535-072t7sqlg9bicd3n6bts74ltdq1g3819.apps.googleusercontent.com', // Client id
 	'qwBXqYOFSpeOvibSRkkV8bT6', // Client Secret
@@ -94,6 +94,38 @@ router.post('/webinarreminder', auth, (req, res) => {
 			res.json({ message: 'all send' });
 		})
 		.catch();
+});
+
+function generateOTP() {  
+	return Math.floor(
+		Math.random() * (999999 - 100000) + 100000
+	)
+}
+router.post('/sendotp', (req, res) => {
+	user
+		.findOne({email:req.body.email})
+		.exec()
+		.then((user) => {
+			const otp=generateOTP();
+			const mailOptions = {
+				from: 'info@acolab.org',
+				to: user['email'],
+				subject: 'Reset Password',
+				generateTextFromHTML: true,
+				html: `Reset password OTP is` + otp,
+			};
+
+			smtpTransport.sendMail(mailOptions, (error, response) => {
+				error ? console.log(error) : console.log(response);
+				smtpTransport.close();
+			});
+			const userotp = new OTP({email:user['email'],otp:otp})
+			userotp.save()
+			res.status(200).json({message:"done"})
+		})
+		.catch((err)=>{
+			res.status(400).json(err)
+		});
 });
 
 module.exports = router;
