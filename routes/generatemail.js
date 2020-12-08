@@ -96,35 +96,33 @@ router.post('/webinarreminder', auth, (req, res) => {
 		.catch();
 });
 
-function generateOTP() {  
-	return Math.floor(
-		Math.random() * (999999 - 100000) + 100000
-	)
+function generateOTP() {
+	return Math.floor(Math.random() * (999999 - 100000) + 100000);
 }
 router.post('/sendotp', (req, res) => {
 	user
-		.findOne({email:req.body.email})
+		.findOne({ email: req.body.email })
 		.exec()
 		.then((user) => {
-			const otp=generateOTP();
+			const otp = generateOTP();
 			const mailOptions = {
 				from: 'info@acolab.org',
 				to: user['email'],
 				subject: 'Reset Password',
 				generateTextFromHTML: true,
-				html: `Reset password OTP is` + otp,
+				html: `Your OTP to reset your password is ${otp}`,
 			};
 
 			smtpTransport.sendMail(mailOptions, (error, response) => {
 				error ? console.log(error) : console.log(response);
 				smtpTransport.close();
 			});
-			const userotp = new OTP({email:user['email'],otp:otp})
-			userotp.save()
-			res.status(200).json({message:"done"})
+			const userotp = new OTP({ email: user['email'], otp: otp });
+			userotp.save();
+			res.status(200).json({ message: 'done' });
 		})
-		.catch((err)=>{
-			res.status(400).json(err)
+		.catch((err) => {
+			res.status(400).json(err);
 		});
 });
 
