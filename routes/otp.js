@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const user = require('../model/user');
 const OTP = require('../model/otp');
@@ -10,9 +11,27 @@ router.post('/validateotp', (req, res) => {
 		.exec()
 		.then((user) => {
 			if(user['otp']==req.body.otp){
-				res.status(200).json({message:"validated"})
+				const payload = {
+					auser: {
+						id: user['_id'],
+					},
+				};
+				jwt.sign(
+					payload,
+					'secret',
+					{
+						expiresIn: 10000,
+					},
+					(err, token) => {
+						if (err) throw err;
+						res.status(200).json({
+							token,
+						});
+					}
+				);
+				//res.status(200).json({message:payload})
 			}else{
-				res.status(401).json({message:"incorrect"})
+				res.status(200).json({message:"incorrect"})
 			}
 		})
 		.catch((err)=>{

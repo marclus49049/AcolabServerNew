@@ -363,6 +363,31 @@ const addorder = async (req, res, next) => {
 	});
 };
 
+const forgotPassword = async (req, res, next) => {
+	console.log('asd')
+	//const isMatch = await bcrypt.compare(password, user.password);
+	const user =await User.findOne({email:req.body.email}, async function (err, data) {
+		//const isMatch =await  bcrypt.compare(req.body.oldPassword, data.password);
+		
+			const salt = await bcrypt.genSalt(10);
+			const newPassword = await bcrypt.hash(req.body.newPassword, salt);
+			User.update(
+				{ email:req.body.email },
+				{
+					password:newPassword ,
+				},
+				function (err, num, res) {
+					// console.log(err)
+					// console.log(num)
+					// console.log(res)
+				}
+			).catch((err)=>{});
+			res.status(200).json({message:"reset done"})
+	}).catch((err)=>{
+		res.status(400).json({message:err})
+	})
+};
+
 // module.exports=addUser;
 // module.exports=login;
 // module.exports=getUser;
@@ -378,5 +403,6 @@ module.exports = {
 	leaderboard: leaderboard,
 	updateUserProfile: updateUserProfile,
 	addorder: addorder,
-	resetPassword:resetPassword
+	resetPassword:resetPassword,
+	forgotPassword:forgotPassword
 };
