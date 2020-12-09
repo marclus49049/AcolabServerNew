@@ -126,4 +126,37 @@ router.post('/sendotp', (req, res) => {
 		});
 });
 
+router.post('/sendotpsignup', (req, res) => {
+	user
+		.findOne({ email: req.body.email })
+		.exec()
+		.then((user) => {
+			console.log(user)
+			if(user!=null){
+				res.status(400).json({msg:"user already registered"});
+			}else{
+				console.log('else')
+			const otp = generateOTP();
+			const mailOptions = {
+				from: 'info@acolab.org',
+				to: req.body.email,
+				subject: 'Verify Email',
+				generateTextFromHTML: true,
+				html: `Your OTP to verify email is ${otp}`,
+			};
+
+			smtpTransport.sendMail(mailOptions, (error, response) => {
+				error ? console.log(error) : console.log(response);
+				smtpTransport.close();
+			});
+			const userotp = new OTP({ email: req.body.email, otp: otp });
+			userotp.save();
+			res.status(200).json({ msg: 'done' });
+		}
+		})
+		.catch((err) => {
+			res.status(400).json({msg:err});
+		});
+});
+
 module.exports = router;
