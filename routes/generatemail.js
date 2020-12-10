@@ -145,13 +145,20 @@ router.post('/sendotpsignup', (req, res) => {
 				html: `Your OTP to verify email is ${otp}`,
 			};
 
-			smtpTransport.sendMail(mailOptions, (error, response) => {
-				error ? console.log(error) : console.log(response);
-				smtpTransport.close();
-			});
+			console.log(otp)
 			const userotp = new OTP({ email: req.body.email, otp: otp });
-			userotp.save();
-			res.status(200).json({ msg: 'done' });
+			OTP.findOne({email:req.body.email}).then((result)=>{
+				if(result!=null){
+					res.status(200).json({ msg: 'already sent' });
+				}else{
+					smtpTransport.sendMail(mailOptions, (error, response) => {
+						error ? console.log(error) : console.log(response);
+						smtpTransport.close();
+					});
+					userotp.save();
+					res.status(200).json({ msg: 'done' });
+				}
+			})
 		}
 		})
 		.catch((err) => {
