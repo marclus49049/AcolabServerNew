@@ -11,25 +11,25 @@ router.post('/validateotp', (req, res) => {
 		.exec()
 		.then((user) => {
 			if(user['otp']==req.body.otp){
-				const payload = {
-					auser: {
-						id: user['_id'],
-					},
-				};
-				jwt.sign(
-					payload,
-					'secret',
-					{
-						expiresIn: 10000,
-					},
-					(err, token) => {
-						if (err) throw err;
-						res.status(200).json({
-							token,
-						});
-					}
-				);
-				//res.status(200).json({message:payload})
+				// const payload = {
+				// 	auser: {
+				// 		id: user['_id'],
+				// 	},
+				// };
+				// jwt.sign(
+				// 	payload,
+				// 	'secret',
+				// 	{
+				// 		expiresIn: 10000,
+				// 	},
+				// 	(err, token) => {
+				// 		if (err) throw err;
+				// 		res.status(200).json({
+				// 			token,
+				// 		});
+				// 	}
+				// );
+				res.status(200).json({token:'validated'})
 			}else{
 				res.status(200).json({message:"incorrect"})
 			}

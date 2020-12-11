@@ -127,6 +127,7 @@ router.post('/sendotp', (req, res) => {
 });
 
 router.post('/sendotpsignup', (req, res) => {
+	console.log('asde')
 	user
 		.findOne({ email: req.body.email })
 		.exec()
