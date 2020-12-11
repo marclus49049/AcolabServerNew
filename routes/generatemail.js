@@ -74,7 +74,7 @@ router.post('/webinarreminder', auth, (req, res) => {
 						`. 
 					This is to remind you that the webinar will be held today at ` +
 						req.body.time +
-						`. The joining link will be activated at (1 hour before the scheduled time) and will be available under the webinar tab in your CoLab account.  
+						`. The joining link will be activated at (1 hour before the scheduled time) and will be available under the SharEd tab in your ACoLab account.  
 					Let’s learn together. See you soon, Fellow CoLaborator.
 					Keep Learning, Sharing, Innovating and CoLaborating.
 					
@@ -156,8 +156,8 @@ router.post('/sendotpsignup', (req, res) => {
 						error ? console.log(error) : console.log(response);
 						smtpTransport.close();
 					});
-					userotp.save();
-					res.status(200).json({ msg: 'done' });
+					userotp.save().then((result)=>{res.status(200).json({ msg: 'done' });});
+					
 				}
 			})
 		}
