@@ -12,7 +12,7 @@ const otp = mongoose.Schema({
 	createAt: {
 		type: Date,
 		default: Date.now(),
-		index: { expires: 60*15}
+		//index: { expires: 60*15}
 	}
 });
 // export model user with UserSchema

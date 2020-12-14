@@ -5,9 +5,9 @@ const webinar = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	speaker: {
-		type: String,
-		required: true,
+	category:{
+		type:String,
+		required:true
 	},
 	link: {
 		type: String,
@@ -32,6 +32,14 @@ const webinar = mongoose.Schema({
 	designation: {
 		type: String,
 		required: true,
+	},
+	preferredCaption:{
+		type:[String],
+		required:false
+	},
+	preknowledge:{
+		type:String,
+		required:false
 	},
 });
 // export model user with UserSchema

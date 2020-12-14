@@ -5,6 +5,7 @@ const router = express.Router();
 const webinar = require('../model/webinar');
 
 router.post('/addwebinar', async (req, res) => {
+	// console.log(req.body)
 	var newwebinar = new webinar({
 		title: req.body.title,
 		speaker: req.body.speaker,
@@ -13,9 +14,17 @@ router.post('/addwebinar', async (req, res) => {
 		action: req.body.action,
 		date: req.body.date,
 		status: req.body.status,
-		designation:req.body.designation
+		designation:req.body.designation,
+		preferredCaption:req.body.preferredCaption,
+		preknowledge:req.body.preknowledge,
+		category:req.body.category
 	});
-	await newwebinar.save().then(res.json(newwebinar));
+	await newwebinar.save().then((result)=>{
+		res.status(200).json(result)
+	}).catch((err)=>{
+		console.log(err)
+		res.status(400).json({message:"error occured"})
+	});
 });
 
 router.post('/updatewebinar', async (req, res) => {

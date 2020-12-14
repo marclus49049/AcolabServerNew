@@ -60,6 +60,21 @@ const UserSchema = mongoose.Schema({
 		type: [Object],
 		unique: false,
 	},
+	profile:{
+		type:Object,
+		required:false
+	},
+	qualification:{
+		type:String,
+		required:false
+	},
+	socialMediaLinks:{
+		type:Object,
+		required:false
+	},
+	speakerWebinar:{
+		type:[Object]
+	}
 });
 
 // export model user with UserSchema
