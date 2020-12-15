@@ -69,6 +69,9 @@ app.use('/otp',OTP);
 
 app.use('/speaker',speaker)
 
+app.use('/home/admin/userdata/speaker', express.static('/home/admin/userdata/speaker'));
+
+
 app.get('/', (req, res) => {
 	console.log('API is Running');
 });
