@@ -5,7 +5,8 @@ const {
 	login,
 	updateUserProfile,
 	resetPassword,
-	forgotPassword
+	forgotPassword,
+	getAllEmails
 } = require('../controller/userService');
 // const addUser = require('../controller/userService')
 const expressValidator = require('express-validator');
@@ -47,4 +48,7 @@ router.put('/updateuser', auth, updateUserProfile);
 router.put('/resetpassword',auth,resetPassword);
 
 router.put('/forgotpassword',forgotPassword);
+
+router.get('/getallemails',getAllEmails);
+
 module.exports = router;

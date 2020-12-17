@@ -388,6 +388,21 @@ const forgotPassword = async (req, res, next) => {
 	})
 };
 
+const getAllEmails = async (req, res, next) => {
+	try {
+		var emailLit=[];
+		// request.user is getting fetched from Middleware after token authentication
+		const user = await User.find({}, function (error, data) {
+			for(var i=0;i<data.length;i++){
+				emailLit.push(data[i]['email'])
+			}
+		}).then((result)=>{res.status(200).json(emailLit)});
+		
+	} catch (e) {
+		res.send({ message: 'Error in Fetching user' });
+	}
+};
+
 // module.exports=addUser;
 // module.exports=login;
 // module.exports=getUser;
@@ -404,5 +419,6 @@ module.exports = {
 	updateUserProfile: updateUserProfile,
 	addorder: addorder,
 	resetPassword:resetPassword,
-	forgotPassword:forgotPassword
+	forgotPassword:forgotPassword,
+	getAllEmails:getAllEmails
 };
