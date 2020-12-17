@@ -4,7 +4,7 @@ const router = express.Router();
 
 const webinar = require('../model/webinar');
 
-router.post('/addwebinar', async (req, res) => {
+router.post('/addwebinar',auth, async (req, res) => {
 	// console.log(req.body)
 	var newwebinar = new webinar({
 		title: req.body.title,
@@ -27,7 +27,7 @@ router.post('/addwebinar', async (req, res) => {
 	});
 });
 
-router.post('/updatewebinar', async (req, res) => {
+router.post('/updatewebinar', auth,async (req, res) => {
 	webinar
 		.findOneAndUpdate(
 			{ _id: req.body.id },

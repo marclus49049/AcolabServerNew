@@ -49,6 +49,6 @@ router.put('/resetpassword',auth,resetPassword);
 
 router.put('/forgotpassword',forgotPassword);
 
-router.get('/getallemails',getAllEmails);
+router.get('/getallemails',auth,getAllEmails);
 
 module.exports = router;
