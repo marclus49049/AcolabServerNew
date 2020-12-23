@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { webinarSchema } = require('./dbName');
 
 const webinar = mongoose.Schema({
 	title: {
@@ -43,4 +44,4 @@ const webinar = mongoose.Schema({
 	},
 });
 // export model user with UserSchema
-module.exports = mongoose.model('webinar', webinar);
+module.exports = mongoose.model(webinarSchema, webinar);

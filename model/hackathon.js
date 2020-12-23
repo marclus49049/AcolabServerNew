@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {hackathonSchema}=require('./dbName')
 
 const HackathonSchema = mongoose.Schema({
 	title: {
@@ -24,4 +25,4 @@ const HackathonSchema = mongoose.Schema({
 });
 
 // export model user with UserSchema
-module.exports = mongoose.model('hackathon', HackathonSchema);
+module.exports = mongoose.model(hackathonSchema, HackathonSchema);

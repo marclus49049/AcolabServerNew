@@ -32,15 +32,17 @@ router.post('/updatewebinar', auth,async (req, res) => {
 		.findOneAndUpdate(
 			{ _id: req.body.id },
 			{
-				title: req.body.title,
-				speaker: req.body.speaker,
-				description: req.body.description,
-				link: req.body.link,
-				action: req.body.action,
-				date: req.body.date,
-				designation: req.body.designation,
-				status: req.body.status,
-				designation: req.body.designation
+			title: req.body.title,
+			speaker: req.body.speaker,
+			description: req.body.description,
+			link: req.body.link,
+			action: req.body.action,
+			date: req.body.date,
+			status: req.body.status,
+			designation:req.body.designation,
+			preferredCaption:req.body.preferredCaption,
+			preknowledge:req.body.preknowledge,
+			category:req.body.category
 			},
 			function (err, num, res) {
 				// console.log(err)

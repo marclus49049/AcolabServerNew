@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const {otpSchema}=require('./dbName')
+
 
 const otp = mongoose.Schema({
 	email: {
@@ -16,4 +18,4 @@ const otp = mongoose.Schema({
 	}
 });
 // export model user with UserSchema
-module.exports = mongoose.model('otp', otp);
+module.exports = mongoose.model(otpSchema, otp);

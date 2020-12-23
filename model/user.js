@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const {userSchema}=require('./dbName')
+
 var d = new Date();
 var addition = 60;
 // console.log(d.getMonth());
@@ -78,4 +80,4 @@ const UserSchema = mongoose.Schema({
 });
 
 // export model user with UserSchema
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model(userSchema, UserSchema);
