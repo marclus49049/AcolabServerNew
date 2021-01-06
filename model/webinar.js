@@ -11,7 +11,7 @@ const webinar = mongoose.Schema({
 		required:true
 	},
 	link: {
-		type: String,
+		type: Object,
 		required: true,
 	},
 	action: {
