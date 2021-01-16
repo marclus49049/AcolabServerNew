@@ -35,6 +35,7 @@ router.post('/updatewebinar', auth,async (req, res) => {
 			title: req.body.title,
 			speaker: req.body.speaker,
 			description: req.body.description,
+			topicDescription: req.body.topicDescription,
 			link: req.body.link,
 			action: req.body.action,
 			date: req.body.date,

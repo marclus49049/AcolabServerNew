@@ -22,6 +22,10 @@ const webinar = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	topicDescription: {
+		type: String,
+		required: true,
+	},
 	date: {
 		type: Date,
 		required: true,
