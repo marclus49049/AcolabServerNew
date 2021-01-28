@@ -42,6 +42,10 @@ const webinar = mongoose.Schema({
 		type:String,
 		required:false
 	},
+	interestedUser:{
+		type:String,
+		required:false
+	}
 });
 // export model user with UserSchema
 module.exports = mongoose.model(webinarSchema, webinar);

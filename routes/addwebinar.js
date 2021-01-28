@@ -28,6 +28,27 @@ router.post('/addwebinar',auth, async (req, res) => {
 	});
 });
 
+router.post(`/addInterested/${webinarId}`, auth,async (req, res) => {
+		webinar
+			.findOneAndUpdate(
+				{ _id: req.body.id },
+				{
+					interestedUser: req.body.interestedUser
+				},
+				function (err, num, res) {
+					
+				}
+			)
+			.then((data) => {
+				res.status(200).json({
+					// Send URL here
+					message: 'Reminder added',
+					update: data,
+					// credits:user.credits
+				});
+			});
+	});
+
 router.post('/updatewebinar', auth,async (req, res) => {
 	webinar
 		.findOneAndUpdate(
