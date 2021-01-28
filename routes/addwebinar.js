@@ -28,15 +28,14 @@ router.post('/addwebinar',auth, async (req, res) => {
 	});
 });
 
-router.post(`/addInterested/${webinarId}`, auth,async (req, res) => {
+router.post('/addInterested/:webinarId', auth,async (req, res) => {
 		webinar
 			.findOneAndUpdate(
-				{ _id: req.body.id },
+				{ _id: req.body.id},
 				{
 					interestedUser: req.body.interestedUser
 				},
 				function (err, num, res) {
-					
 				}
 			)
 			.then((data) => {
