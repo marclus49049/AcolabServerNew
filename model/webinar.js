@@ -43,7 +43,7 @@ const webinar = mongoose.Schema({
 		required:false
 	},
 	interestedUser:{
-		type:String,
+	type:[String],
 		required:false
 	}
 });

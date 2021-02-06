@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const router = express.Router();
+const Auth = require('../middleware/auth');
 
 const webinar = require('../model/webinar');
 
@@ -18,7 +19,8 @@ router.post('/addwebinar',auth, async (req, res) => {
 		designation:req.body.designation,
 		preferredCaption:req.body.preferredCaption,
 		preknowledge:req.body.preknowledge,
-		category:req.body.category
+		category:req.body.category,
+		interestedUser:req.body.interestedUser
 	});
 	await newwebinar.save().then((result)=>{
 		res.status(200).json(result)
@@ -28,25 +30,17 @@ router.post('/addwebinar',auth, async (req, res) => {
 	});
 });
 
-router.post('/addInterested/:webinarId', auth,async (req, res) => {
-		webinar
-			.findOneAndUpdate(
-				{ _id: req.body.id},
-				{
-					interestedUser: req.body.interestedUser
-				},
-				function (err, num, res) {
-				}
-			)
-			.then((data) => {
-				res.status(200).json({
-					// Send URL here
-					message: 'Reminder added',
-					update: data,
-					// credits:user.credits
-				});
-			});
+router.post('/addInterested/:webId', Auth, async (req, res) => {
+	webinar.findByIdAndUpdate(req.params.webId,{$push: { interestedUser: req.body.interestedUser},})
+		//{ _id: req.params.webId },{
+		//$push: { interestedUser:req.body.interestedUser},
+	//})
+	.then((result)=>{
+		res.status(200).json({message:"Reminder added"});
+	}).catch((err)=>{
+		res.status(400).json({message:"Couldnt add"})
 	});
+});
 
 router.post('/updatewebinar', auth,async (req, res) => {
 	webinar
